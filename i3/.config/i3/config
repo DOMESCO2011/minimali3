@@ -1,0 +1,122 @@
+# --- i3 Config - domesco final ---
+
+# Módosító billentyű (Super/Windows gomb)
+set $mod Mod4
+
+# Betűtípus (Cascadia Code)
+font pango:Cascadia Code 10, FontAwesome 10
+
+# Ablakkeretek stílusa
+default_border pixel 2
+default_floating_border pixel 2
+hide_edge_borders smart
+
+# Gaps
+gaps inner 12
+gaps outer 8
+smart_gaps on
+smart_borders on
+
+# Workspace nevek
+set $ws1 "1 general "
+set $ws2 "2 browser "
+set $ws3 "3 coding "
+set $ws4 "4 games "
+set $ws5 "5 other "
+set $ws6 "6 other "
+set $ws7 "7 other "
+set $ws8 "8 other "
+set $ws9 "9 other "
+
+
+# --- Billentyűkombinációk (Frissítve) ---
+
+# Alapvető programok
+bindsym $mod+Return exec kitty
+bindsym $mod+q kill
+bindsym $mod+Shift+b exec brave
+bindsym $mod+e exec kitty -e yazi
+bindsym $mod+v exec code
+bindsym $mod+n exec kitty -e nmtui
+bindsym $mod+p exec --no-startup-id arandr
+bindsym Print exec --no-startup-id flameshot gui
+bindsym $mod+b exec zen-browser
+
+
+# Rofi (Maradt a korábbi kérésed alapján)
+bindsym Mod1+space exec rofi -show drun
+bindsym $mod+d exec rofi -show drun
+
+# --- Navigáció ---
+# Fókusz váltás: MOD + SHIFT + NYILAK
+bindsym $mod+Shift+Left focus left
+bindsym $mod+Shift+Down focus down
+bindsym $mod+Shift+Up focus up
+bindsym $mod+Shift+Right focus right
+
+# Ablak mozgatása: MOD + NYILAK
+bindsym $mod+Left move left
+bindsym $mod+Down move down
+bindsym $mod+Up move up
+bindsym $mod+Right move right
+
+# Elrendezés módosítása
+bindsym $mod+h split h
+bindsym $mod+s layout stacking
+bindsym $mod+z layout tabbed
+bindsym $mod+Shift+space floating toggle
+bindsym $mod+f fullscreen toggle
+
+# Rendszer kezelés
+bindsym $mod+Shift+r restart
+bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'Biztosan ki akarsz lépni?' -B 'Igen' 'i3-msg exit'"
+
+
+# Teljes képernyős mentés azonnal (mint GNOME-ban a Shift+Print)
+bindsym $mod+Print exec --no-startup-id flameshot full -p ~/Pictures/Screenshots
+
+
+# --- Multimédia gombok ---
+bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +5%
+bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -5%
+bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle
+bindsym XF86MonBrightnessUp exec --no-startup-id brightnessctl set +5%
+bindsym XF86MonBrightnessDown exec --no-startup-id brightnessctl set 5%-
+
+# --- Workspace váltás ---
+bindsym $mod+1 workspace $ws1
+bindsym $mod+2 workspace $ws2
+bindsym $mod+3 workspace $ws3
+bindsym $mod+4 workspace $ws4
+bindsym $mod+5 workspace $ws5
+bindsym $mod+6 workspace $ws6
+bindsym $mod+7 workspace $ws7
+bindsym $mod+8 workspace $ws8
+bindsym $mod+9 workspace $ws9
+
+# --- Ablak mozgatása workspace-ek közé ---
+bindsym $mod+Shift+1 move container to workspace $ws1
+bindsym $mod+Shift+2 move container to workspace $ws2
+bindsym $mod+Shift+3 move container to workspace $ws3
+bindsym $mod+Shift+4 move container to workspace $ws4
+bindsym $mod+Shift+5 move container to workspace $ws5
+bindsym $mod+Shift+6 move container to workspace $ws6
+bindsym $mod+Shift+7 move container to workspace $ws7
+bindsym $mod+Shift+8 move container to workspace $ws8
+bindsym $mod+Shift+9 move container to workspace $ws9
+
+# --- Lebegő ablak szabályok ---
+for_window [class="Arandr"] floating enable
+for_window [class="blueman-manager"] floating enable
+for_window [class="Pavucontrol"] floating enable
+for_window [class="Nm-connection-editor"] floating enable
+for_window [class="flameshot"] floating enable, border empty
+
+# --- Automatikus indítás (Frissítve) ---
+exec_always --no-startup-id feh --bg-scale ~/.config/i3/wallpaper.png
+exec_always --no-startup-id picom -b
+exec_always --no-startup-id ~/.config/polybar/launch.sh
+exec --no-startup-id setxkbmap hu
+
+# --- Egér: Természetes görgetés ---
+exec_always --no-startup-id xinput set-prop $(xinput list --name-only | grep -iE 'mouse|touchpad|pointer' | head -n 1) "libinput Natural Scrolling Enabled" 1
